@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { YMaps, Map, Placemark } from "react-yandex-maps";
+
 import useStyles from "./style";
 
-const getLocationDetails = () => {
+const getLocationDetails = (): Promise<IMapOptions> => {
   return new Promise((resolve) => {
     setTimeout(
       () =>
@@ -19,11 +20,11 @@ const getLocationDetails = () => {
 interface IMapOptions {
   latLng: number[],
   zoom: number,
-  geometry: number[]
+  geometry: number[],
 };
 
 const App = () => {
-  const [mapOptions, setMapOptions] = useState<any>();
+  const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const classes = useStyles();
 
   useEffect(() => {
@@ -33,14 +34,13 @@ const App = () => {
   }, []);
 
   if (mapOptions) {
-    const { latLng, zoom, geometry } : IMapOptions = mapOptions;
+    const { latLng, zoom, geometry } = mapOptions;
 
     return (
       <YMaps>
         <div className={classes.root}>
-          
           <Map defaultState={{ center: latLng, zoom }} className={classes.map}>
-            <Placemark geometry={geometry}/>
+            <Placemark geometry={geometry} />
           </Map>
         </div>
       </YMaps>
